@@ -1,0 +1,8 @@
+.columns {
+    height: 100vh;
+}
+
+ion-icon {
+    padding-right: 5px;
+    font-size: larger;
+}
