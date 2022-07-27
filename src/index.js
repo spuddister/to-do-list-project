@@ -1,1 +1,5 @@
-// import taskManager from taskManager.js;
+import tableManager from './tablemanager';
+
+
+
+tableManager.buildTasks();
