@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hello Bulma!</title>
+    <title>To Do's</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="../src/styles.css">
+    <link rel="shortcut icon" type="image/jpg" href="./checkmark-circle-outline.svg"/>
     <script src="main.js" defer></script> 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js" defer></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js" defer></script>
@@ -33,7 +34,7 @@
         <div class="column">
             <nav class="navbar" role="navigation" aria-label="main navigation">
                 <a class="navbar-item title">
-                  <ion-icon name="golf-outline"></ion-icon> To Do's
+                  <ion-icon name="checkmark-circle-outline"></ion-icon> To Do's
                 </a>         
                 <div class="navbar-end">
                   <div class="navbar-item">
@@ -44,7 +45,7 @@
                       <a class="button is-primary">
                         <ion-icon name="add-outline"></ion-icon><strong>New Project</strong>
                       </a>
-                      <a class="button is-light">
+                      <a href="https://github.com/spuddister" target=”_blank” class="button is-light">
                         <ion-icon name="logo-github"></ion-icon>spuddister
                       </a>
                     </div>
@@ -55,22 +56,15 @@
                 <table class="table">
                     <thead>
                       <tr>
-                        <th><abbr title="Complete"> </abbr></th>
+                        <th><abbr title="Complete"></abbr></th>
                         <th>Task</th>
                         <th>Due Date</th>
-                        <th>Delete</th>
+                        <th></th>
                       </tr>
                     </thead>
                     
                     <tbody id="table-body">
-                      <tr>
-                        <td><label class="checkbox">
-                          <input type="checkbox">
-                        </label></td>
-                        <td>Go grocery shopping for food</td>
-                        <td>January 1st, 2023</td>
-                        <td><a class="tag is-delete"></a></td>
-                      </tr>
+                      
                     </tbody>
                   </table>
   
