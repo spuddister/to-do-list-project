@@ -1,5 +1,7 @@
-import tableManager from './tablemanager';
+import {renderTasks} from './taskmanager';
 
 
 
-tableManager.buildTasks();
+renderTasks();
+
+

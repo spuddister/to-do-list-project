@@ -1,5 +1,5 @@
 var pubsub = (function () {
-    events = {};
+    let events = {};
 
     function subscribe (eventName, fn) {
         events[eventName] = events[eventName] || [];
@@ -7,6 +7,7 @@ var pubsub = (function () {
     }
 
     function publish (eventName, data) {
+        console.log(eventName, data);
         if (events[eventName]) {
             events[eventName].forEach(function(fn) {
               fn(data);
@@ -22,4 +23,4 @@ var pubsub = (function () {
     
 })();
 
-export default pubsub;
+export {pubsub};
