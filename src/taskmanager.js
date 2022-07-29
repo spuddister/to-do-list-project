@@ -15,6 +15,11 @@ let tasks = [
         taskDesc: 'Read a book',
         dueDate: '2022-05-31',
         complete: true,
+    },
+    {
+        taskDesc: 'Test example',
+        dueDate: '2022-05-31',
+        complete: false,
     }
 ];
 
@@ -27,10 +32,9 @@ function newTaskRequest() {
         dueDate: inputDueDate.value,
         complete: false,
         }
-    )})
+    )});
     addBtn.classList.add('button', 'is-primary', 'is-light');
     addBtn.textContent = 'Add';
-    
     tdAddBtn.appendChild(addBtn);
 
     const tdTaskName = document.createElement('td');
@@ -38,6 +42,15 @@ function newTaskRequest() {
     inputTaskName.classList.add('input');
     inputTaskName.type = 'text';
     inputTaskName.placeholder = 'Go grocery shopping...'
+    inputTaskName.addEventListener('keypress', (e)=>{
+        if(e.key === 'Enter') {
+            pubsub.publish('add-task', {
+            taskDesc: inputTaskName.value,
+            dueDate: inputDueDate.value,
+            complete: false,
+            })
+        }
+    });
     tdTaskName.appendChild(inputTaskName);
     
     const tdDueDate = document.createElement('td');
@@ -72,15 +85,29 @@ function clearTable() {
     tableBody.innerHTML = '';
 }
 
+function deleteTask(index) {
+    tasks.splice(index,1);
+    renderTasks();
+}
+
 function renderTasks() {
     clearTable();
-    tasks.forEach(task => {
-        
+    tasks.forEach((task, index) => {
         const tdCheckBtn = document.createElement('td');
         const lblCheckBtn = document.createElement('label');
         lblCheckBtn.classList.add('checkbox');
         const checkBtn = document.createElement('input');
         checkBtn.type = 'checkbox';
+        checkBtn.addEventListener('change', function() {
+            if (this.checked) {
+                tr.classList.add('complete');
+                task.complete = true;
+            } else {
+                tr.classList.remove('complete');
+                task.complete = false;
+            }
+        });
+        tdCheckBtn.classList.add('td-1');
         lblCheckBtn.appendChild(checkBtn);
         tdCheckBtn.appendChild(lblCheckBtn);
 
@@ -91,6 +118,9 @@ function renderTasks() {
         tdDueDate.innerText = task.dueDate;
         
         const deleteBtn = document.createElement('a');
+        deleteBtn.addEventListener('click', ()=>{
+            deleteTask(index);
+        });
         deleteBtn.classList.add('tag', 'is-delete');
         const tdDelete = document.createElement('td');
         tdDelete.appendChild(deleteBtn);
@@ -100,9 +130,12 @@ function renderTasks() {
         tr.appendChild(tdTaskName);
         tr.appendChild(tdDueDate);
         tr.appendChild(tdDelete);
-        
+        if (task.complete === true) {
+            tr.classList.add('complete');
+            checkBtn.checked = true;
+        }            
         tableBody.appendChild(tr);
     });
 }
 
-export {renderTasks, newTask}; 
+export {renderTasks}; 

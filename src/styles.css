@@ -7,3 +7,18 @@ ion-icon {
     font-size: larger;
 }
 
+td:first-child {
+    width: 90px;
+}
+
+td:nth-child(3){
+    width: 15%;
+}
+
+td:last-child {
+    width: 5%;
+}
+
+.complete {
+    color: #3636365d;
+}
