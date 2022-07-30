@@ -18,17 +18,17 @@
                 <p class="menu-label">
                   Tasks
                 </p>
-                <ul class="menu-list">
-                  <li ><a class="is-active">All Tasks</a></li>
-                  <li><a>Today</a></li>
-                  <li><a>This Week</a></li>
+                <ul id="task-list" class="menu-list">
+                  <li ><a class="is-active menu-item">All Tasks</a></li>
+                  <li><a class="menu-item">Today</a></li>
+                  <li><a class="menu-item">This Week</a></li>
                 </ul>
                 <p class="menu-label">
                   Projects
                 </p>
-                <ul class="menu-list">
-                  <li><a>Default Project</a></li>
-                
+                <ul id="project-list" class="menu-list">
+                  <li><a class="menu-item">Default Project</a></li>
+                </ul>
               </aside>
         </div>
         <div class="column">
@@ -42,7 +42,7 @@
                       <a id="new-task-button" class="button is-info">
                         <ion-icon name="add-outline"></ion-icon><strong>New Task</strong>
                       </a>
-                      <a class="button is-primary">
+                      <a id="new-project-button" class="button is-primary">
                         <ion-icon name="add-outline"></ion-icon><strong>New Project</strong>
                       </a>
                       <a href="https://github.com/spuddister" target=”_blank” class="button is-light">

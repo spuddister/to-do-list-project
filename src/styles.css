@@ -22,3 +22,8 @@ td:last-child {
 .complete {
     color: #3636365d;
 }
+
+.menu {
+    padding-left: 10px;
+    padding-top: 10px;
+}
