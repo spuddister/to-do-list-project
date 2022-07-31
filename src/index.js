@@ -8,6 +8,7 @@ newTaskBtn.addEventListener('click', function(){
     taskBtnToggle();    
 });
 pubsub.subscribe('task-added', taskBtnToggle)
+pubsub.subscribe('new-task-cancelled', taskBtnToggle);
 function taskBtnToggle() {
     newTaskBtn.classList.toggle('is-loading');
 }
@@ -18,6 +19,7 @@ newProjectBtn.addEventListener('click', function(){
     projectBtnToggle();    
 });
 pubsub.subscribe('project-added', projectBtnToggle)
+pubsub.subscribe('new-project-cancelled', taskBtnToggle);
 function projectBtnToggle() {
     newProjectBtn.classList.toggle('is-loading');
 }

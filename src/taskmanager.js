@@ -4,6 +4,7 @@ let taskManager = (function(){
     const tableBody = document.getElementById('table-body');
     pubsub.subscribe('new-task-request', newTaskRequest);
     pubsub.subscribe('task-added', newTask);
+    pubsub.subscribe('new-task-cancelled', cancelTaskRequest);
 
     let tasks = [
         {
@@ -63,7 +64,9 @@ let taskManager = (function(){
         
         const deleteBtn = document.createElement('a');
         deleteBtn.classList.add('tag', 'is-delete');
-
+        deleteBtn.addEventListener('click', function(){
+            pubsub.publish('new-task-cancelled');
+        })
         const tdDelete = document.createElement('td');
         tdDelete.appendChild(deleteBtn);
 
@@ -74,6 +77,10 @@ let taskManager = (function(){
         tr.appendChild(tdDelete);
         
         tableBody.insertBefore(tr, tableBody.firstChild);
+    }
+
+    function cancelTaskRequest() {
+        tableBody.firstChild.remove();
     }
 
     function newTask(task) {
