@@ -27,3 +27,7 @@ td:last-child {
     padding-left: 10px;
     padding-top: 10px;
 }
+
+.new-project-button {
+    width: 50%;
+}
