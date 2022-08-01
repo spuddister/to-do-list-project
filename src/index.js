@@ -19,7 +19,7 @@ newProjectBtn.addEventListener('click', function(){
     projectBtnToggle();    
 });
 pubsub.subscribe('project-added', projectBtnToggle)
-pubsub.subscribe('new-project-cancelled', taskBtnToggle);
+pubsub.subscribe('new-project-cancelled', projectBtnToggle);
 function projectBtnToggle() {
     newProjectBtn.classList.toggle('is-loading');
 }
