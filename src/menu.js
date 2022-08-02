@@ -4,11 +4,16 @@ import { pubsub } from "./pubsub";
 let menuController = (function() {
     let menuItems = [...document.getElementsByClassName('menu-item')];
     const projectList = document.getElementById('project-list');
+    const dltProjectBtn = document.getElementById('delete-project-button');
+    dltProjectBtn.style.display = 'none';
     pubsub.subscribe('new-project-request', newProjectRequest);
     pubsub.subscribe('project-added', newProject);
     pubsub.subscribe('new-project-cancelled', cancelProjectRequest);
-    
+    pubsub.subscribe('menu-item-selected', menuItemSelection);
+
     let projects = ['Default Project'];
+
+    render();
 
     menuItems.forEach(item => {
         menuItemAddEventListener(item);
@@ -16,16 +21,15 @@ let menuController = (function() {
     
     function menuItemAddEventListener(item) {
         item.addEventListener('click', function(){
-            menuItems.forEach(item => {
-                item.classList.remove('is-active');
-            });
-            item.classList.add('is-active');
+            pubsub.publish('menu-item-selected', item);
         })
     }
 
-    function setFocus(project) {
-        //complete the render function and fix the 'is-selected'. try to have one source that can alter it. 
-        //remember that if its a project that has been selected, the tasks related to it will be shown.
+    function menuItemSelection(selectedItem) {
+        menuItems.forEach(item => {
+            item.classList.remove('is-active');
+        });
+        selectedItem.classList.add('is-active');
     }
 
     function newProjectRequest() {
@@ -37,14 +41,12 @@ let menuController = (function() {
         inputProjectName.addEventListener('keypress', (e)=>{
             if(e.key === 'Enter') {
                 pubsub.publish('project-added', inputProjectName.value)
-                console.log(inputProjectName.value);
             }
         });
         liProjectName.appendChild(inputProjectName);
 
         const addBtn = document.createElement('button');
         addBtn.addEventListener('click', function(){
-            clearProjects();
             pubsub.publish('project-added', inputProjectName.value)
         });
         addBtn.classList.add('button', 'is-primary', 'is-light', 'new-project-button');
@@ -66,34 +68,26 @@ let menuController = (function() {
 
     function newProject(projectName) {
         projects.push(projectName);
-        renderProjects();
-    }
-
-    function buildProjListElement(projectName) {
+        projectList.lastChild.remove();
         const listElement = document.createElement('li');
         const anchorElement = document.createElement('a');
         anchorElement.innerText = projectName;
         menuItemAddEventListener(anchorElement);
         anchorElement.classList.add('menu-item');
+        menuItemSelection(anchorElement);
+        menuItems.push(anchorElement);
         listElement.appendChild(anchorElement);
-        return listElement;
+        projectList.appendChild(listElement);
     }
 
     function cancelProjectRequest() {
         projectList.lastChild.remove();
     }
 
-    function renderProjects() {
-        clearProjects();
-        projects.forEach((project, index) => {
-            let listElement = buildProjListElement(project);
-            projectList.appendChild(listElement);
+    function render() {
+        projects.forEach(project => {
+            newProject(project);
         });
-        menuItems = [...document.getElementsByClassName('menu-item')];
-    }
-
-    function clearProjects() {
-        projectList.innerHTML = '';
     }
 })()
 

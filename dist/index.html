@@ -27,7 +27,9 @@
                   Projects
                 </p>
                 <ul id="project-list" class="menu-list">
-                  <li><a class="menu-item">Default Project</a></li>
+                  <li>
+                    <a class="menu-item">Test Proj</a>
+                  </li>
                 </ul>
               </aside>
         </div>
@@ -39,11 +41,14 @@
                 <div class="navbar-end">
                   <div class="navbar-item">
                     <div class="buttons">
+                      <a id="delete-project-button" class="button is-warning">
+                        <ion-icon name="trash-outline"></ion-icon><strong>Delete Project</strong>
+                      </a>
                       <a id="new-task-button" class="button is-info">
-                        <ion-icon name="add-outline"></ion-icon><strong>New Task</strong>
+                        <ion-icon name="add-circle-outline"></ion-icon><strong>New Task</strong>
                       </a>
                       <a id="new-project-button" class="button is-primary">
-                        <ion-icon name="add-outline"></ion-icon><strong>New Project</strong>
+                        <ion-icon name="add-circle-outline"></ion-icon><strong>New Project</strong>
                       </a>
                       <a href="https://github.com/spuddister" target=”_blank” class="button is-light">
                         <ion-icon name="logo-github"></ion-icon>spuddister
@@ -53,6 +58,10 @@
                 </div>
               </nav>
             <div class="container content">
+                <div class="container is-flex">
+                  <div class="subtitle is-4">All Tasks</div>
+                </div>
+
                 <table class="table">
                     <thead>
                       <tr>
