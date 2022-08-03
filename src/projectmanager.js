@@ -1,7 +1,7 @@
 import { pubsub } from "./pubsub";
 
 
-let menuController = (function() {
+let projectController = (function() {
     let menuItems = [...document.getElementsByClassName('menu-item')];
     const projectList = document.getElementById('project-list');
     const dltProjectBtn = document.getElementById('delete-project-button');
@@ -91,4 +91,4 @@ let menuController = (function() {
     }
 })()
 
-export {menuController};
+export {projectController};

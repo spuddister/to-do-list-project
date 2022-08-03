@@ -7,6 +7,24 @@ let taskManager = (function(){
     pubsub.subscribe('task-added', newTask);
     pubsub.subscribe('new-task-cancelled', cancelTaskRequest);
 
+    let tasks = [
+        {
+            taskDesc: 'Go grocery shopping',
+            dueDate: '2022-07-27',
+            complete: false,
+        },
+        {
+            taskDesc: 'Read a book',
+            dueDate: '2022-05-31',
+            complete: true,
+        },
+        {
+            taskDesc: 'Test example',
+            dueDate: '2022-05-31',
+            complete: false,
+        }
+    ]
+
     renderTasks();
 
     function newTaskRequest() {
