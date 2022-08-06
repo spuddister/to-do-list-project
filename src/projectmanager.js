@@ -11,15 +11,15 @@ let projectController = (function() {
     pubsub.subscribe('new-project-cancelled', cancelProjectRequest);
     pubsub.subscribe('menu-item-selected', menuItemSelection);
 
-    let projects = ['Default Project'];
+    let projects = ['Default Project', 'test'];
 
     render();
 
-    menuItems.forEach(item => {
-        item.addEventListener('click', function(){
-            pubsub.publish('menu-item-selected', item);
+    for(let i=0; i<=2; i++){
+        menuItems[i].addEventListener('click', function(){
+            pubsub.publish('menu-item-selected', menuItems[i]);
         })
-    });
+    }
 
     function menuItemSelection(selectedItem) {
         menuItems.forEach(item => {
@@ -65,17 +65,21 @@ let projectController = (function() {
     function newProject(projectName) {
         projects.push(projectName);
         projectList.lastChild.remove();
+        projectList.appendChild(buildProjectListItem(projectName)); ;
+    }
+
+    function buildProjectListItem(projectName){
         const listElement = document.createElement('li');
         const anchorElement = document.createElement('a');
         anchorElement.innerText = projectName;
         anchorElement.addEventListener('click', function(){
-            pubsub.publish('project-selected', projectName);
+            pubsub.publish('menu-item-selected', anchorElement);
         });
         anchorElement.classList.add('menu-item');
         menuItemSelection(anchorElement);
         menuItems.push(anchorElement);
         listElement.appendChild(anchorElement);
-        projectList.appendChild(listElement);
+        return listElement;
     }
 
     function cancelProjectRequest() {
@@ -84,7 +88,7 @@ let projectController = (function() {
 
     function render() {
         projects.forEach(project => {
-            newProject(project);
+            projectList.appendChild(buildProjectListItem(project));
         });
     }
 })()

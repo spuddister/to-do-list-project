@@ -1,12 +1,14 @@
 import {pubsub} from "./pubsub";
 import {dataController} from "./data";
+import isThisWeek from 'date-fns/isThisWeek';
+import isToday from 'date-fns/isToday';
 
 let taskManager = (function(){
     const tableBody = document.getElementById('table-body');
     pubsub.subscribe('new-task-request', newTaskRequest);
     pubsub.subscribe('task-added', newTask);
     pubsub.subscribe('new-task-cancelled', cancelTaskRequest);
-    pubsub.subscribe('project-selected', filterTasksByProject);
+    pubsub.subscribe('menu-item-selected', filterTasks);
 
     let tasks = [
         {
@@ -150,9 +152,11 @@ let taskManager = (function(){
         });
     }
 
-    function filterTasksByProject(project) {
+    function filterTasks(menuItem) {
+        // console.log(menuItem.innerText)
         //filter tasks based on which project is selected and update a variable that is maybe called displayedTasks
         //update the table title
+
     }
 })();
 
