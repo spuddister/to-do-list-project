@@ -16,14 +16,10 @@ let projectController = (function() {
     render();
 
     menuItems.forEach(item => {
-        menuItemAddEventListener(item);
-    });
-    
-    function menuItemAddEventListener(item) {
         item.addEventListener('click', function(){
             pubsub.publish('menu-item-selected', item);
         })
-    }
+    });
 
     function menuItemSelection(selectedItem) {
         menuItems.forEach(item => {
@@ -72,7 +68,9 @@ let projectController = (function() {
         const listElement = document.createElement('li');
         const anchorElement = document.createElement('a');
         anchorElement.innerText = projectName;
-        menuItemAddEventListener(anchorElement);
+        anchorElement.addEventListener('click', function(){
+            pubsub.publish('project-selected', projectName);
+        });
         anchorElement.classList.add('menu-item');
         menuItemSelection(anchorElement);
         menuItems.push(anchorElement);

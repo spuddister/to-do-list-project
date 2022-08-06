@@ -1,11 +1,12 @@
 import {pubsub} from "./pubsub";
-import {projects} from "./data";
+import {dataController} from "./data";
 
 let taskManager = (function(){
     const tableBody = document.getElementById('table-body');
     pubsub.subscribe('new-task-request', newTaskRequest);
     pubsub.subscribe('task-added', newTask);
     pubsub.subscribe('new-task-cancelled', cancelTaskRequest);
+    pubsub.subscribe('project-selected', filterTasksByProject);
 
     let tasks = [
         {
@@ -24,6 +25,10 @@ let taskManager = (function(){
             complete: false,
         }
     ]
+    // console.table(tasks)
+
+    let tasks2 = dataController.getTasks();
+    // console.table(tasks2)
 
     renderTasks();
 
@@ -143,6 +148,11 @@ let taskManager = (function(){
             }            
             tableBody.appendChild(tr);
         });
+    }
+
+    function filterTasksByProject(project) {
+        //filter tasks based on which project is selected and update a variable that is maybe called displayedTasks
+        //update the table title
     }
 })();
 
