@@ -5,10 +5,12 @@ import isToday from 'date-fns/isToday';
 
 let taskManager = (function(){
     const tableBody = document.getElementById('table-body');
+    const tableTitle = document.getElementById('table-title');
     pubsub.subscribe('new-task-request', newTaskRequest);
     pubsub.subscribe('task-added', newTask);
     pubsub.subscribe('new-task-cancelled', cancelTaskRequest);
     pubsub.subscribe('menu-item-selected', filterTasks);
+    pubsub.subscribe('menu-item-selected', tableTitleUpdate);
 
     let tasks = [
         {
@@ -55,11 +57,12 @@ let taskManager = (function(){
         inputTaskName.placeholder = 'Go grocery shopping...'
         inputTaskName.addEventListener('keypress', (e)=>{
             if(e.key === 'Enter') {
-                pubsub.publish('task-added', {
-                taskDesc: inputTaskName.value,
-                dueDate: inputDueDate.value,
-                complete: false,
-                })
+                pubsub.publish('task-added', [
+                inputTaskName.value,
+                // project name,
+                inputDueDate.value,
+                'false',
+                ])
             }
         });
         tdTaskName.appendChild(inputTaskName);
@@ -152,8 +155,21 @@ let taskManager = (function(){
         });
     }
 
+    function tableTitleUpdate(menuItem){
+        tableTitle.textContent = menuItem.textContent;
+    }
+
     function filterTasks(menuItem) {
-        // console.log(menuItem.innerText)
+        let filterValue = menuItem.innerText;
+        if (filterValue == 'All Tasks') {
+            return getTasks();
+        } else if(filterValue == 'Today'){
+            
+        } else if(filterValue == 'This Week'){
+
+        } else {
+
+        }
         //filter tasks based on which project is selected and update a variable that is maybe called displayedTasks
         //update the table title
 

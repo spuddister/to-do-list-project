@@ -33,17 +33,17 @@ let projectController = (function() {
         const inputProjectName = document.createElement('input');
         inputProjectName.classList.add('input');
         inputProjectName.type = 'text';
-        inputProjectName.placeholder = 'Project name'
+        inputProjectName.placeholder = 'Project name';
         inputProjectName.addEventListener('keypress', (e)=>{
             if(e.key === 'Enter') {
-                pubsub.publish('project-added', inputProjectName.value)
+                pubsub.publish('project-added', inputProjectName.value);
             }
         });
         liProjectName.appendChild(inputProjectName);
 
         const addBtn = document.createElement('button');
         addBtn.addEventListener('click', function(){
-            pubsub.publish('project-added', inputProjectName.value)
+            pubsub.publish('project-added', inputProjectName.value);
         });
         addBtn.classList.add('button', 'is-primary', 'is-light', 'new-project-button');
         addBtn.textContent = 'Add';
