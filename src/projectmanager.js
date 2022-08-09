@@ -13,13 +13,16 @@ let projectController = (function() {
 
     let projects = ['Default Project', 'test'];
 
-    render();
+    
 
     for(let i=0; i<=2; i++){
         menuItems[i].addEventListener('click', function(){
             pubsub.publish('menu-item-selected', menuItems[i]);
         })
     }
+    
+    render();
+    menuItemSelection(menuItems[0]);
 
     function menuItemSelection(selectedItem) {
         menuItems.forEach(item => {

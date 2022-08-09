@@ -10,19 +10,19 @@ let dataController = (function() {
         [   
             'Go grocery shopping',
             'Default Project',
-            '2022-07-27',
+            '2022-08-08',
             'false',
         ],
         [
             'Read The Foundation by Isaac Asimov',
             'Default Project',
-            '2022-05-31',
+            '2022-08-10',
             'false',
         ],
         [
             'Learn how to use localStorage',
             'Work',
-            '2022-05-31',
+            '2022-08-08',
             'true',
         ]
         ,
@@ -34,7 +34,7 @@ let dataController = (function() {
         ]
         ,
         [
-            'Send Jan an email about our trip to Jamaica',
+            'Send Jan an email about Jamaica trip',
             'Work',
             '2022-08-11',
             'false',
