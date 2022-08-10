@@ -39,7 +39,7 @@
                 <div class="navbar-end">
                   <div class="navbar-item">
                     <div class="buttons">
-                      <a id="delete-project-button" class="button is-warning">
+                      <a id="delete-project-button" class="button is-warning js-modal-trigger">
                         <ion-icon name="trash-outline"></ion-icon><strong>Delete Project</strong>
                       </a>
                       <a id="new-task-button" class="button is-info">
@@ -76,6 +76,23 @@
                   </table>
   
             </div>
+        </div>
+      </div>
+      <div id="modal-project-delete" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Delete Project?</p>
+            <button class="delete" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            <p>All tasks within this project will be deleted.</p>
+            <p>Do you wish to continue?</p>
+          </section>
+          <footer class="modal-card-foot">
+            <button id="delete-project-confirm" class="button is-danger">Delete</button>
+            <button class="button">Cancel</button>
+          </footer>
         </div>
       </div>
   </body>
