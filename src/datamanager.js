@@ -1,4 +1,4 @@
-
+import {pubsub} from './pubsub';
 
 
 let dataController = (function() {
@@ -47,17 +47,28 @@ let dataController = (function() {
             'true',
         ]
     ];
+
+    pubsub.subscribe('task-deleted', setTasks);
+    pubsub.subscribe('task-info-change', setTasks);
+    pubsub.subscribe('task-saved', setTasks);
+    pubsub.subscribe('project-saved', setProjects);
     
     if (storageAvailable('localStorage')) {
         if (localStorage.getItem('tasks') != null) {
             tasks = convertStorageData(localStorage.getItem('tasks'));
+            // tasks=defaultTasks;
+            // localStorage.setItem('tasks', tasks); //2 lines to be removed for prod
         } else {
             tasks = defaultTasks;
+            localStorage.setItem('tasks', tasks);
         }
         if (localStorage.getItem('projects') != null) {
             projects = localStorage.getItem('projects').split(',');
+            // projects = defaultProjects;
+            // localStorage.setItem('projects', projects); //2 lines to be removed for prod
         } else {
             projects = defaultProjects;
+            localStorage.setItem('projects', projects);
         }
             
     } else {
@@ -78,11 +89,6 @@ let dataController = (function() {
         }
         return convertedData;
     }
-    
-    // localStorage.clear();
-    // localStorage.setItem("tasks", tasks);
-    // localStorage.setItem("projects", projects);
-    // console.log(localStorage.getItem('projects'))
 
 
     function storageAvailable(type) {
@@ -110,31 +116,28 @@ let dataController = (function() {
         }
     }
 
-    function updateLocalStorage(){ //possibly not needed
-        localStorage.clear();
+    function setTasks(newTasks){
+        tasks = newTasks;
         localStorage.setItem('tasks', tasks);
+    }
+    function setProjects(newProjects){
+        projects = newProjects;
         localStorage.setItem('projects', projects);
-    }
-
-    function setTask(task){
-        tasks.push(task);
-        localStorage.setItem('tasks', tasks);
-    }
-
-    function deleteTask(task){
-        // let index = tasks.findIndex()
-        //instead of finding the specific task, this function should except a new list of tasks and update the storage with that instead
     }
 
     function getTasks(){
         return tasks;
     }
 
-    return {
-        setTask: setTask,
-        getTasks: getTasks,
-        deleteTask: deleteTask,
+    function getProjects(){
+        return projects;
+    }
 
+    return {
+        setTasks: setTasks,
+        getTasks: getTasks,
+        setProjects: setProjects,
+        getProjects: getProjects,
     }
 
 })();

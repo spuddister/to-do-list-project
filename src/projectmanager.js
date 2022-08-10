@@ -1,8 +1,11 @@
+import { dataController } from "./datamanager";
 import { pubsub } from "./pubsub";
 
 
 let projectController = (function() {
+    let projects = dataController.getProjects();
     let menuItems = [...document.getElementsByClassName('menu-item')];
+    let selectedMenuItem = menuItems[0];
     const projectList = document.getElementById('project-list');
     const dltProjectBtn = document.getElementById('delete-project-button');
     dltProjectBtn.style.display = 'none';
@@ -10,11 +13,11 @@ let projectController = (function() {
     pubsub.subscribe('project-added', newProject);
     pubsub.subscribe('new-project-cancelled', cancelProjectRequest);
     pubsub.subscribe('menu-item-selected', menuItemSelection);
-
-    let projects = ['Default Project', 'test'];
-
+    pubsub.subscribe('project-selected', function(){
+        dltProjectBtn.style.display = 'flex';
+    })
+    pubsub.subscribe('delete-project', deleteProject);
     
-
     for(let i=0; i<=2; i++){
         menuItems[i].addEventListener('click', function(){
             pubsub.publish('menu-item-selected', menuItems[i]);
@@ -29,6 +32,12 @@ let projectController = (function() {
             item.classList.remove('is-active');
         });
         selectedItem.classList.add('is-active');
+        selectedMenuItem = selectedItem;
+        if(selectedItem.textContent != 'All Tasks' && selectedItem.textContent != 'Today' && selectedItem.textContent != 'This Week') {
+            pubsub.publish('project-selected', selectedItem);
+        } else {
+            dltProjectBtn.style.display = 'none';
+        }
     }
 
     function newProjectRequest() {
@@ -67,8 +76,9 @@ let projectController = (function() {
 
     function newProject(projectName) {
         projects.push(projectName);
+        pubsub.publish('project-saved', projects);
         projectList.lastChild.remove();
-        projectList.appendChild(buildProjectListItem(projectName)); ;
+        projectList.appendChild(buildProjectListItem(projectName));
     }
 
     function buildProjectListItem(projectName){
@@ -79,7 +89,6 @@ let projectController = (function() {
             pubsub.publish('menu-item-selected', anchorElement);
         });
         anchorElement.classList.add('menu-item');
-        menuItemSelection(anchorElement);
         menuItems.push(anchorElement);
         listElement.appendChild(anchorElement);
         return listElement;
@@ -87,6 +96,15 @@ let projectController = (function() {
 
     function cancelProjectRequest() {
         projectList.lastChild.remove();
+    }
+
+    function deleteProject() {
+        projects.splice(projects.findIndex((project)=>project == selectedMenuItem.textContent),1);
+        pubsub.publish('project-deleted', selectedMenuItem.textContent);
+        dataController.setProjects(projects);
+        projectList.innerHTML ='';
+        pubsub.publish('menu-item-selected', menuItems[0]);
+        render();
     }
 
     function render() {

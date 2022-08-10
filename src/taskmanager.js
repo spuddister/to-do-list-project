@@ -1,5 +1,5 @@
 import {pubsub} from "./pubsub";
-import {dataController} from "./data";
+import {dataController} from "./datamanager";
 import isThisWeek from 'date-fns/isThisWeek';
 import isToday from 'date-fns/isToday';
 import { parseISO, toDate } from "date-fns";
@@ -7,7 +7,7 @@ import { parseISO, toDate } from "date-fns";
 let taskManager = (function(){
     const tableBody = document.getElementById('table-body');
     const tableTitle = document.getElementById('table-title');
-    let filterValue = '';
+    let filterValue = 'All Tasks';
     let currentProject = '';
     let filteredTasks = [];
     pubsub.subscribe('new-task-request', newTaskRequest);
@@ -15,27 +15,9 @@ let taskManager = (function(){
     pubsub.subscribe('new-task-cancelled', cancelTaskRequest);
     pubsub.subscribe('menu-item-selected', tableTitleUpdate);
     pubsub.subscribe('menu-item-selected', filterTasks);
-
-    // let tasks = [
-    //     {
-    //         taskDesc: 'Go grocery shopping',
-    //         dueDate: '2022-07-27',
-    //         complete: false,
-    //     },
-    //     {
-    //         taskDesc: 'Read a book',
-    //         dueDate: '2022-05-31',
-    //         complete: true,
-    //     },
-    //     {
-    //         taskDesc: 'Test example',
-    //         dueDate: '2022-05-31',
-    //         complete: false,
-    //     }
-    // ]
+    pubsub.subscribe('project-deleted', projectRemoval);
 
     let tasks = dataController.getTasks();
-    console.table(tasks)
 
     renderTasks(tasks);
 
@@ -53,7 +35,6 @@ let taskManager = (function(){
             inputDueDate.value,
             'false',
             ]);
-            console.table(tasks);
         });
         addBtn.classList.add('button', 'is-primary', 'is-light');
         addBtn.textContent = 'Add';
@@ -109,22 +90,28 @@ let taskManager = (function(){
 
     function newTask(task) {
         tasks.unshift(task);
-        renderTasks(filteredTasks);
+        pubsub.publish('task-saved', tasks);
+        filterTasks();
     }
 
     function clearTable() {
         tableBody.innerHTML = '';
     }
 
-    function deleteTask(index) {
-        tasks.splice(index,1);
+    function deleteTask(delTask) {
+        tasks.splice(tasks.findIndex((task)=>task == delTask),1);
+        pubsub.publish('task-deleted', tasks);
         filterTasks();
-        renderTasks(filteredTasks);
+    }
+
+    function updateTask(updTask, newData, index) {
+        tasks[tasks.findIndex((task)=>task == updTask)][index] = newData;
+        pubsub.publish('task-info-change', tasks);
     }
 
     function renderTasks(renderList) {
         clearTable();
-        renderList.forEach((task, index) => {
+        renderList.forEach((task) => {
             const tdCheckBtn = document.createElement('td');
             const lblCheckBtn = document.createElement('label');
             lblCheckBtn.classList.add('checkbox');
@@ -133,10 +120,10 @@ let taskManager = (function(){
             checkBtn.addEventListener('change', function() {
                 if (this.checked) {
                     tr.classList.add('complete');
-                    task[3] = 'true';
+                    updateTask(task, 'true', 3);
                 } else {
                     tr.classList.remove('complete');
-                    task[3] = 'false';
+                    updateTask(task, 'false', 3);
                 }
             });
             lblCheckBtn.appendChild(checkBtn);
@@ -150,7 +137,7 @@ let taskManager = (function(){
             
             const deleteBtn = document.createElement('a');
             deleteBtn.addEventListener('click', ()=>{
-                deleteTask(index);
+                deleteTask(task)
             });
             deleteBtn.classList.add('tag', 'is-delete');
             const tdDelete = document.createElement('td');
@@ -186,7 +173,6 @@ let taskManager = (function(){
                     filteredTasks.push(tasks[i]);
                 }
             }
-            console.table(filteredTasks)
         } else if(filterValue == 'This Week'){
             currentProject = '';
             for(let i=0; i<tasks.length; i++){
@@ -194,7 +180,6 @@ let taskManager = (function(){
                     filteredTasks.push(tasks[i]);
                 }
             }
-            console.table(filteredTasks)
         } else {
             currentProject = filterValue;
             for(let i=0; i<tasks.length; i++){
@@ -204,6 +189,19 @@ let taskManager = (function(){
             }
         }
         renderTasks(filteredTasks);
+    }
+
+    function projectRemoval(delProject) {
+        let tempTasks = [];
+        for(let i=0; i<tasks.length; i++){
+            if (tasks[i][1] != delProject){
+                tempTasks.unshift(tasks[i]);
+            }    
+        }
+        tasks = tempTasks;
+        dataController.setTasks(tasks);
+        filterValue = 'All Tasks';
+        filterTasks();
     }
 })();
 

@@ -1,6 +1,7 @@
 import {taskManager} from './taskmanager';
 import {menuController} from './projectmanager'
 import { pubsub } from './pubsub';
+import modal from './modal';
 
 const newTaskBtn = document.getElementById('new-task-button');
 newTaskBtn.addEventListener('click', function(){
