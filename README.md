@@ -11,6 +11,7 @@ For this project from [The Odin Project](https://www.theodinproject.com/) Curric
   - D - Dependency Inversion Principle
 - Reduced coupling of objects
 - More Webpack (adding and using external libraries)
+- Local storage
 - JSON Processing
   
 #
